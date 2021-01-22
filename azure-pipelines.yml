@@ -28,8 +28,7 @@ steps:
 - script: npm install -g npm
 - task: Npm@1
   inputs:
-  command: 'install'
-
+    command: 'install'
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
