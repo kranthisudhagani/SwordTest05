@@ -35,8 +35,8 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
-- script: pwd
-- script: npm test
+- script: cd BuildTest\ClientApp
+- script: npm test 
 - script: karma test --reporter karma-junit-reporter
 - script: jasmine test --reporter jasmine-reporter
 
