@@ -34,7 +34,8 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
-- script: npm --prefix BuildTest/ClientApp test 
+- script: cd 
+- script: npm test --prefix BuildTest/ClientApp 
 - script: karma test --reporter karma-junit-reporter
 - script: jasmine test --reporter jasmine-reporter
 
