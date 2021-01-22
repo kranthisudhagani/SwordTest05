@@ -35,6 +35,9 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
+- script: npm --version
+- script: npm install express
+- script: npm init -y
 - script: npm test
 - script: karma test --reporter karma-junit-reporter
 - script: jasmine test --reporter jasmine-reporter
