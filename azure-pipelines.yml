@@ -34,8 +34,10 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
-- script: npm cache clean
+- script: npm install -g @angular/cli
 - script: npm test
+- script: karma test --reporter karma-junit-reporter
+- script: jasmine test --reporter jasmine-reporter
 
 - task: VSTest@2
   inputs:
