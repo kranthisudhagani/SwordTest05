@@ -25,7 +25,6 @@ steps:
   inputs:
     versionSpec: '12.x'
 
-- script: npm cache clean --force
 - script: npm install -g npm
 
 - task: VSBuild@1
@@ -35,8 +34,7 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
-- script: cd BuildTest\ClientApp
-- script: npm test 
+- script: npm --prefix BuildTest/ClientApp test 
 - script: karma test --reporter karma-junit-reporter
 - script: jasmine test --reporter jasmine-reporter
 
