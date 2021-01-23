@@ -48,6 +48,12 @@ steps:
     configuration: '$(buildConfiguration)'
   condition: succeededOrfailed()
 
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'test'
+    projects: '**/*/BuildTest.csproj'
+  displayName: "RE-Unit Tests"
+
 - task: Npm@1
   displayName: "Java Script Tests"
   inputs:
