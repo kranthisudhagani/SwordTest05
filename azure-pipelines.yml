@@ -36,7 +36,7 @@ steps:
   inputs:
     testSelector: 'testAssemblies'
     testAssemblyVer2: |
-      **\BuildTest.*test*.dll
+      **\$(buildConfiguration)\*\*test*.dll
       !**\*TestAdapter.dll
       !**\obj\**
     searchFolder: '$(System.DefaultWorkingDirectory)'
@@ -45,13 +45,14 @@ steps:
     codeCoverageEnabled: true
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
-
+  condition: succeededOrfailed()
 - task: Npm@1
   displayName: "Java Script Tests"
   inputs:
     command: 'custom'
     workingDir: 'BuildTest\ClientApp'
     customCommand: 'run test'
+  condition: succeededOrfailed()
 
 
 
