@@ -38,8 +38,10 @@ steps:
 
 - script: npm test --prefix BuildTest/ClientApp
 - script: npm install -g karma-cli
+- script: npm install karma --save-dev
 - script: karma test --reporter karma-junit-reporter
 - script: npm install -g jasmine
+- script: npm install jasmine --save-dev
 - script: jasmine test --reporter jasmine-reporter
 
 - task: VSTest@2
