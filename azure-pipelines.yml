@@ -24,11 +24,6 @@ steps:
 - task: NodeTool@0 
   inputs:
     versionSpec: '12.x'
-
-- script: npm install -g npm
-- task: Npm@1
-  inputs:
-    command: 'install'
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
@@ -36,23 +31,27 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
-- script: npm test --prefix BuildTest/ClientApp
-- script: npm install -g karma-cli
-- script: npm install karma --save-dev
-- script: karma test --reporter karma-junit-reporter
-- script: npm install -g jasmine
-- script: npm install jasmine --save-dev
-- script: jasmine test --reporter jasmine-reporter
-
 - task: VSTest@2
+  displayName: "Unit Tests"
   inputs:
+    testSelector: 'testAssemblies'
+    testAssemblyVer2: |
+      **\BuildTest.*test*.dll
+      !**\*TestAdapter.dll
+      !**\obj\**
+    searchFolder: '$(System.DefaultWorkingDirectory)'
+    runOnlyImpactedTests: false
+    runTestsInIsolation: true
+    codeCoverageEnabled: true
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
-- task: PublishTestResults@2
-  condition: succeededOrFailed()
+- task: Npm@1
+  displayName: "Java Script Tests"
   inputs:
-    testRunner: JUnit
-    testResultsFiles: '**/TEST-RESULTS.xml'
+    command: 'custom'
+    workingDir: 'BuildTest\ClientApp'
+    customCommand: 'run test'
+
 
 
