@@ -6,7 +6,7 @@
     "start": "ng serve",
     "build": "ng build",
     "build:ssr": "ng run BuildTest:server:dev",
-    "test": "ng test",
+    "test": "ng test --testResultsProcessor ./node_modules/karma-junit-reporter ./node_modules/jasmine-console-reporter",
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
