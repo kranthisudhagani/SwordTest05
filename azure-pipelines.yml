@@ -53,6 +53,11 @@ steps:
     workingDir: 'BuildTest\ClientApp'
     customCommand: 'run test'
   condition: succeededOrfailed()
+- task: PublishTestResults@2
+  displayName: "Report the test results"
+  inputs:
+    testResultsFormat: 'JUnit'
+    testResultsFiles: '**/TEST-*.xml'
 
 
 
