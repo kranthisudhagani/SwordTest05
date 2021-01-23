@@ -31,22 +31,12 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
-- task: VSTest@2
-  displayName: "Unit Tests"
+- task: DotNetCoreCLI@2
   inputs:
-    testSelector: 'testAssemblies'
-    testAssemblyVer2: |
-      **\$(buildConfiguration)\*\*test*.dll
-      !**\*TestAdapter.dll
-      !**\obj\**
-    searchFolder: '$(System.DefaultWorkingDirectory)'
-    runOnlyImpactedTests: false
-    runTestsInIsolation: true
-    codeCoverageEnabled: true
-    otherConsoleOptions: '/Framework:.NETCoreApp,Version=v3.1'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
-  condition: succeededOrfailed()
+    command: 'test'
+    projects: '**/*/BuildTest.csproj'
+  displayName: Run the server-side tests
+
 - task: Npm@1
   displayName: "Java Script Tests"
   inputs:
