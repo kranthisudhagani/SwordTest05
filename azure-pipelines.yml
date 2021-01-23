@@ -37,7 +37,9 @@ steps:
     configuration: '$(buildConfiguration)'
 
 - script: npm test --prefix BuildTest/ClientApp
+- script: npm install -g karma-cli
 - script: karma test --reporter karma-junit-reporter
+- script: npm install -g jasmine
 - script: jasmine test --reporter jasmine-reporter
 
 - task: VSTest@2
