@@ -41,7 +41,7 @@ steps:
       !**\obj\**
     searchFolder: '$(System.DefaultWorkingDirectory)'
     runOnlyImpactedTests: false
-    vsTestVersion: 'toolsInstaller'
+    vsTestVersion: '15.0'
     runTestsInIsolation: true
     codeCoverageEnabled: true
     platform: '$(buildPlatform)'
