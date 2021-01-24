@@ -47,6 +47,12 @@ steps:
     configuration: '$(buildConfiguration)'
   condition: succeededOrfailed()
 
+- task: UseDotNet@2
+  inputs:
+    packageType: 'sdk'
+    useGlobalJson: true
+    workingDirectory: '$(System.DefaultWorkingDirectory)'
+
 - task: DotNetCoreCLI@2
   inputs:
     command: 'test'
