@@ -41,6 +41,7 @@ steps:
       !**\obj\**
     searchFolder: '$(System.DefaultWorkingDirectory)'
     runOnlyImpactedTests: false
+    vsTestVersion: 'toolsInstaller'
     runTestsInIsolation: true
     codeCoverageEnabled: true
     platform: '$(buildPlatform)'
@@ -63,7 +64,7 @@ steps:
 - task: PublishTestResults@2
   displayName: "Report the test results"
   inputs:
-    testResultsFormat: 'JUnit'
+    testResultsFormat: 'VSTest'
     testResultsFiles: '**/TEST-*.xml'
 
 
