@@ -36,18 +36,22 @@ steps:
   inputs:
     testSelector: 'testAssemblies'
     testAssemblyVer2: |
-      **\$(BuildConfiguration)\*test*.dll
-      **\$(buildConfiguration)\**\*test*.dll
+      **\$(buildConfiguration)\*\*test*.dll
       !**\*TestAdapter.dll
       !**\obj\**
     searchFolder: '$(System.DefaultWorkingDirectory)'
     runOnlyImpactedTests: false
     runTestsInIsolation: true
     codeCoverageEnabled: true
-    otherConsoleOptions: '/platform:x64 /Framework:.NETCoreApp,Version=v3.1 /logger:console;verbosity="normal"'
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
   condition: succeededOrfailed()
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'test'
+    projects: '**/*/UnitTest.csproj'
+  displayName: "RE-Unit Tests"
 
 - task: PublishTestResults@2
   inputs:
@@ -69,8 +73,3 @@ steps:
   inputs:
     testResultsFormat: 'JUnit'
     testResultsFiles: '**/TEST-*.xml'
-    buildPlatform: '$(buildPlatform)'
-    buildConfiguration: '$(buildConfiguration)'
-
-
-
