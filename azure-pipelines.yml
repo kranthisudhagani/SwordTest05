@@ -50,13 +50,14 @@ steps:
 - task: DotNetCoreCLI@2
   inputs:
     command: 'test'
-    projects: '**/*/UnitTest.csproj'
+    projects: '**/*/MyUniteTests.csproj'
   displayName: "RE-Unit Tests"
 
 - task: PublishTestResults@2
   inputs:
     testResultsFormat: 'VSTest'
     testResultsFiles: '**/TEST-*.trx'
+    searchFolder: '$(Agent.TempDirectory)\TestResults'
     buildPlatform: '$(buildPlatform)'
     buildConfiguration: '$(buildConfiguration)'
 
@@ -73,3 +74,4 @@ steps:
   inputs:
     testResultsFormat: 'JUnit'
     testResultsFiles: '**/TEST-*.xml'
+    searchFolder: '$(Agent.TempDirectory)\TestResults'
