@@ -24,6 +24,7 @@ steps:
 - task: NodeTool@0 
   inputs:
     versionSpec: '12.x'
+
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
@@ -31,35 +32,17 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
-- task: VSTest@2
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'test'
+    projects: '**/*/BuildTest.csproj'
   displayName: "Unit Tests"
-  inputs:
-    testSelector: 'testAssemblies'
-    testAssemblyVer2: |
-      **\$(buildConfiguration)\*\*test*.dll
-      !**\*TestAdapter.dll
-      !**\obj\**
-    searchFolder: '$(System.DefaultWorkingDirectory)'
-    runOnlyImpactedTests: false
-    runTestsInIsolation: true
-    codeCoverageEnabled: true
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
-  condition: succeededOrfailed()
-
-- task: PublishTestResults@2
-  inputs:
-    testResultsFormat: 'VSTest'
-    testResultsFiles: '**/*.trx'
-    searchFolder: '$(Agent.TempDirectory)\TestResults'
-    buildPlatform: '$(buildPlatform)'
-    buildConfiguration: '$(buildConfiguration)'
 
 - task: DotNetCoreCLI@2
   inputs:
     command: 'test'
     projects: '**/*/MyUniteTests.csproj'
-  displayName: "RE-Unit Tests"
+  displayName: "MyUnit Tests"
 
 - task: Npm@1
   displayName: "Java Script Tests"
