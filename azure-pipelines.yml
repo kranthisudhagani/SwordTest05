@@ -41,7 +41,6 @@ steps:
       !**\obj\**
     searchFolder: '$(System.DefaultWorkingDirectory)'
     runOnlyImpactedTests: false
-    vsTestVersion: '15.0'
     runTestsInIsolation: true
     codeCoverageEnabled: true
     platform: '$(buildPlatform)'
@@ -54,6 +53,13 @@ steps:
     projects: '**/*/BuildTest.csproj'
   displayName: "RE-Unit Tests"
 
+- task: PublishTestResults@2
+  inputs:
+    testResultsFormat: 'VSTest'
+    testResultsFiles: '**/TEST-*.trx'
+    buildPlatform: '$(buildPlatform)'
+    buildConfiguration: '$(buildConfiguration)'
+
 - task: Npm@1
   displayName: "Java Script Tests"
   inputs:
@@ -64,8 +70,10 @@ steps:
 - task: PublishTestResults@2
   displayName: "Report the test results"
   inputs:
-    testResultsFormat: 'VSTest'
+    testResultsFormat: 'JUnit'
     testResultsFiles: '**/TEST-*.xml'
+    buildPlatform: '$(buildPlatform)'
+    buildConfiguration: '$(buildConfiguration)'
 
 
 
