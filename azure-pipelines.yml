@@ -43,7 +43,6 @@ steps:
     runOnlyImpactedTests: false
     runTestsInIsolation: true
     codeCoverageEnabled: true
-    otherConsoleOptions: '/platform:x64 /Framework:.NETCoreApp,Version=v3.1'
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
   condition: succeededOrfailed()
