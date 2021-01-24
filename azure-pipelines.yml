@@ -44,24 +44,10 @@ steps:
     runOnlyImpactedTests: false
     runTestsInIsolation: true
     codeCoverageEnabled: true
-    otherConsoleOptions: '/platform:x64 /Framework:.NETCoreApp,Version=v2.1 /logger:console;verbosity="normal"'
+    otherConsoleOptions: '/platform:x64 /Framework:.NETCoreApp,Version=v3.1 /logger:console;verbosity="normal"'
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
   condition: succeededOrfailed()
-
-- task: UseDotNet@2
-  inputs:
-    packageType: 'sdk'
-    useGlobalJson: true
-    workingDirectory: '$(System.DefaultWorkingDirectory)'
-
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'test'
-    projects: '**/*BuildTest/*.csproj'
-    arguments: '--configuration $(buildConfiguration)'
-    workingDirectory: '$(System.DefaultWorkingDirectory)'
-  displayName: "RE-Unit Tests"
 
 - task: PublishTestResults@2
   inputs:
@@ -77,6 +63,7 @@ steps:
     workingDir: 'BuildTest\ClientApp'
     customCommand: 'run test'
   condition: succeededOrfailed()
+
 - task: PublishTestResults@2
   displayName: "Report the test results"
   inputs:
