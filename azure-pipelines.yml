@@ -51,6 +51,7 @@ steps:
   inputs:
     command: 'test'
     projects: '**/*/BuildTest.csproj'
+    workingDirectory: '$(System.DefaultWorkingDirectory)'
   displayName: "RE-Unit Tests"
 
 - task: PublishTestResults@2
