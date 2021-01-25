@@ -50,6 +50,7 @@ steps:
 
 - script: npm install karma-junit-reporter --save-dev
 - script: npm install jasmine-reporters --save-dev
+- script: npm install puppeteer --save-dev
 
 - task: Npm@1
   displayName: "Java Script Tests"
