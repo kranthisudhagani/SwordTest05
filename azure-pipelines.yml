@@ -43,15 +43,15 @@ steps:
   inputs:
     command: 'test'
     projects: '**/*/BuildTest.csproj'
-    publishTestResults: true
     arguments: '--no-build --configuration $(buildConfiguration)'
+    workingDirectory: '$(System.DefaultWorkingDirectory)'
   displayName: "Unit Tests"
 
 - task: DotNetCoreCLI@2
   inputs:
     command: 'test'
     projects: '**/*/MyUniteTests.csproj'
-    publishTestResults: true
+    arguments: '--no-build --configuration $(buildConfiguration)'
   displayName: "MyUnit Tests"
 
 - task: Npm@1
@@ -67,5 +67,7 @@ steps:
   displayName: "Report the test results"
   inputs:
     testResultsFormat: 'VSTest'
-    testResultsFiles: '**/*.trx'
+    testResultsFiles: '**/*.xml'
     searchFolder: '$(build.artifactStagingDirectory)'
+    buildPlatform: '$(buildPlatform)'
+    buildConfiguration: '$(buildConfiguration)'
