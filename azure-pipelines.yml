@@ -52,9 +52,9 @@ steps:
     customCommand: 'run test'
   condition: succeededOrfailed()
 
+
 - task: PublishTestResults@2
   displayName: "Report the test results"
   inputs:
-    testResultsFormat: 'JUnit'
-    testResultsFiles: '**/*.xml'
-    searchFolder: '$(Agent.TempDirectory)\TestResults'
+    testResultsFormat: 'VSTest'
+    testResultsFiles: '**/*.trx'
