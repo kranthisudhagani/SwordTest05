@@ -21,6 +21,11 @@ steps:
   inputs:
     restoreSolution: '$(solution)'
 
+- task: UseDotNet@2
+  displayName: 'Use .NET Core SDK $(dotnetSdkVersion)'
+  inputs:
+    version: '$(dotnetSdkVersion)'
+
 - task: NodeTool@0 
   inputs:
     versionSpec: '12.x'
@@ -36,12 +41,15 @@ steps:
   inputs:
     command: 'test'
     projects: '**/*/BuildTest.csproj'
+    publishTestResults: true
+    arguments: '--no-build --configuration $(buildConfiguration)'
   displayName: "Unit Tests"
 
 - task: DotNetCoreCLI@2
   inputs:
     command: 'test'
     projects: '**/*/MyUniteTests.csproj'
+    publishTestResults: true
   displayName: "MyUnit Tests"
 
 - task: Npm@1
