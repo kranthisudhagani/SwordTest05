@@ -60,7 +60,6 @@ steps:
     customCommand: 'run test -- --watch=false --code-coverage'
   condition: succeededOrfailed()
 
-
 - task: PublishCodeCoverageResults@1
   inputs: 
     codeCoverageTool: Cobertura 
@@ -76,13 +75,23 @@ steps:
     buildPlatform: '$(buildPlatform)'
     buildConfiguration: '$(buildConfiguration)'
   displayName: "Report Java script test results"
+  condition: succeededOrfailed()
 
 - task: Npm@1
   displayName: "E2E Tests Scripts"
   inputs:
     command: 'custom'
     workingDir: 'BuildTest\ClientApp'
-    customCommand: 'run test'
+    customCommand: 'run test -- --watch=false --code-coverage'
+  condition: succeededOrfailed()
+
+- task: PublishCodeCoverageResults@1
+  inputs: 
+    codeCoverageTool: Cobertura 
+    summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/*coverage.xml'
+    reportDirectory: '$(System.DefaultWorkingDirectory)/**/coverage'
+    failIfCoverageEmpty: true
+  displayName: 'Publish code coverage E2E Script results'
   condition: succeededOrfailed()
 
 - task: PublishTestResults@2
