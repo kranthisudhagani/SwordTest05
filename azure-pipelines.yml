@@ -32,6 +32,7 @@ steps:
   inputs:
     versionSpec: '12.x'
 
+
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
@@ -82,8 +83,14 @@ steps:
 - task: PublishTestResults@2
   displayName: "Report the test results"
   inputs:
-    testResultsFormat: 'NUnit'
-    testResultsFiles: '**/*.xml'
+    testResultsFormat: 'VSTest'
+    testResultsFiles: '**/*.trx'
     searchFolder: '$(build.artifactStagingDirectory)'
     buildPlatform: '$(buildPlatform)'
     buildConfiguration: '$(buildConfiguration)'
+
+- task: PublishCodeCoverageResults@1
+  inputs: 
+    codeCoverageTool: Cobertura # or JaCoCo
+    summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/*coverage.xml'
+    reportDirectory: '$(System.DefaultWorkingDirectory)/**/coverage'
