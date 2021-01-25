@@ -24,5 +24,10 @@ exports.config = {
     jasmine
       .getEnv()
       .addReporter(new SpecReporter({ spec: { displayStacktrace: true } }));
+      var junitReporter = new JUnitXmlReporter({
+      savePath: require('path').join(__dirname, './junit'),
+      consolidateAll: true
+    });
+    jasmine.getEnv().addReporter(junitReporter);
   }
 };
