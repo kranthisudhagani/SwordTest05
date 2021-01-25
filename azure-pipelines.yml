@@ -1,8 +1,3 @@
-# ASP.NET Core (.NET Framework)
-# Build and test ASP.NET Core projects targeting the full .NET Framework.
-# Add steps that publish symbols, save build artifacts, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
-
 trigger:
 - main
 
@@ -32,17 +27,17 @@ steps:
   inputs:
     versionSpec: '12.x'
 
-
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
     msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
+
 - task: DotNetCoreCLI@2
   inputs:
     command: 'test'
-    projects: 'D:\a\1\s\BuildTest\bin\Release\netcoreapp3.1\'
+    projects: '**/*/BuildTest.csproj'
     arguments: '--no-build --configuration $(buildConfiguration)'''
   displayName: "UnitTests"
 
@@ -51,7 +46,10 @@ steps:
     command: 'test'
     projects: '**/*/MyUniteTests.csproj'
     arguments: '--no-build --configuration $(buildConfiguration)'
-  displayName: "MyUnit Tests"
+  displayName: "CustomUnitTests"
+
+- script: npm install karma-junit-reporter --save-dev
+- script: npm install jasmine-reporters --save-dev
 
 - task: Npm@1
   displayName: "Java Script Tests"
@@ -61,16 +59,30 @@ steps:
     customCommand: 'run test'
   condition: succeededOrfailed()
 
+- task: Npm@1
+  displayName: "E2E Tests Scripts"
+  inputs:
+    command: 'custom'
+    workingDir: 'BuildTest\ClientApp'
+    customCommand: 'run test'
+  condition: succeededOrfailed()
 
 - task: PublishTestResults@2
-  displayName: "Report the test results"
   inputs:
-    testResultsFormat: 'VSTest'
-    testResultsFiles: '**/*.trx'
-    searchFolder: '$(build.artifactStagingDirectory)'
+    testResultsFormat: 'JUnit'
+    testResultsFiles: '**/TESTS*.xml'
     buildPlatform: '$(buildPlatform)'
     buildConfiguration: '$(buildConfiguration)'
+  displayName: "Report Java script test results"
 
+- task: PublishTestResults@2
+  inputs:
+    testResultsFormat: 'JUnit'
+    testResultsFiles: '**/TESTS*.xml'
+    testRunTitle: 'E2E'
+    buildPlatform: '$(buildPlatform)'
+    buildConfiguration: '$(buildConfiguration)'
+  displayName: 'Publish E2E test results'  
 - task: PublishCodeCoverageResults@1
   inputs: 
     codeCoverageTool: Cobertura # or JaCoCo
