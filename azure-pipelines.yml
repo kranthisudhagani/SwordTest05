@@ -39,31 +39,12 @@ steps:
     msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
-
-- task: VSTest@2
-  displayName: "Unit Tests"
+- task: DotNetCoreCLI@2
   inputs:
-    testSelector: 'testAssemblies'
-    testAssemblyVer2: |
-      **\$(buildConfiguration)\*\*test*.dll
-      !**\*TestAdapter.dll
-      !**\obj\**
-    searchFolder: '$(System.DefaultWorkingDirectory)'
-    runOnlyImpactedTests: false
-    runTestsInIsolation: true
-    codeCoverageEnabled: true
-    otherConsoleOptions: '/Framework:.NETFramework,Version=v3.1'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
-  condition: succeededOrfailed()
-
-- task: PublishTestResults@2
-  inputs:
-    testResultsFormat: 'VSTest'
-    testResultsFiles: '**/*.trx'
-    searchFolder: '$(Agent.TempDirectory)\TestResults'
-    buildPlatform: '$(buildPlatform)'
-    buildConfiguration: '$(buildConfiguration)'
+    command: 'test'
+    projects: 'D:\a\1\s\BuildTest\bin\Release\netcoreapp3.1\'
+    arguments: '--no-build --configuration $(buildConfiguration)'''
+  displayName: "UnitTests"
 
 - task: DotNetCoreCLI@2
   inputs:
