@@ -39,13 +39,29 @@ steps:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'test'
-    projects: '**/*/BuildTest.csproj'
-    arguments: '--no-build --configuration $(buildConfiguration)'
-    workingDirectory: '$(System.DefaultWorkingDirectory)'
+- task: VSTest@2
   displayName: "Unit Tests"
+  inputs:
+    testSelector: 'testAssemblies'
+    testAssemblyVer2: |
+      **\$(buildConfiguration)\*\*test*.dll
+      !**\*TestAdapter.dll
+      !**\obj\**
+    searchFolder: '$(System.DefaultWorkingDirectory)'
+    runOnlyImpactedTests: false
+    runTestsInIsolation: true
+    codeCoverageEnabled: true
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
+  condition: succeededOrfailed()
+
+- task: PublishTestResults@2
+  inputs:
+    testResultsFormat: 'VSTest'
+    testResultsFiles: '**/*.trx'
+    searchFolder: '$(Agent.TempDirectory)\TestResults'
+    buildPlatform: '$(buildPlatform)'
+    buildConfiguration: '$(buildConfiguration)'
 
 - task: DotNetCoreCLI@2
   inputs:
@@ -66,7 +82,7 @@ steps:
 - task: PublishTestResults@2
   displayName: "Report the test results"
   inputs:
-    testResultsFormat: 'VSTest'
+    testResultsFormat: 'NUnit'
     testResultsFiles: '**/*.xml'
     searchFolder: '$(build.artifactStagingDirectory)'
     buildPlatform: '$(buildPlatform)'
