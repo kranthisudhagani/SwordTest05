@@ -57,8 +57,25 @@ steps:
   inputs:
     command: 'custom'
     workingDir: 'BuildTest\ClientApp'
-    customCommand: 'run test'
+    customCommand: 'run test -- --watch=false --code-coverage'
   condition: succeededOrfailed()
+
+
+- task: PublishCodeCoverageResults@1
+  inputs: 
+    codeCoverageTool: Cobertura 
+    summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/*coverage.xml'
+    reportDirectory: '$(System.DefaultWorkingDirectory)/**/coverage'
+    failIfCoverageEmpty: true
+  displayName: 'Publish code coverage Java Script results'
+
+- task: PublishTestResults@2
+  inputs:
+    testResultsFormat: 'JUnit'
+    testResultsFiles: '**/TESTS*.xml'
+    buildPlatform: '$(buildPlatform)'
+    buildConfiguration: '$(buildConfiguration)'
+  displayName: "Report Java script test results"
 
 - task: Npm@1
   displayName: "E2E Tests Scripts"
@@ -72,20 +89,7 @@ steps:
   inputs:
     testResultsFormat: 'JUnit'
     testResultsFiles: '**/TESTS*.xml'
-    buildPlatform: '$(buildPlatform)'
-    buildConfiguration: '$(buildConfiguration)'
-  displayName: "Report Java script test results"
-
-- task: PublishTestResults@2
-  inputs:
-    testResultsFormat: 'JUnit'
-    testResultsFiles: '**/TESTS*.xml'
     testRunTitle: 'E2E'
     buildPlatform: '$(buildPlatform)'
     buildConfiguration: '$(buildConfiguration)'
   displayName: 'Publish E2E test results'  
-- task: PublishCodeCoverageResults@1
-  inputs: 
-    codeCoverageTool: Cobertura # or JaCoCo
-    summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/*coverage.xml'
-    reportDirectory: '$(System.DefaultWorkingDirectory)/**/coverage'
