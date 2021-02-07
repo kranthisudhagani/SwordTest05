@@ -9,7 +9,7 @@
     <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
 
     <!-- Set this to true if you enable server-side prerendering -->
-    <!-- add new comment -->
+    <!-- adding new comment -->
     <BuildServerSideRenderer>false</BuildServerSideRenderer>
   </PropertyGroup>
 
