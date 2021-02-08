@@ -78,7 +78,7 @@ steps:
   condition: succeededOrfailed()
 
 - task: Npm@1
-  displayName: "E2E Tests Scripts"
+  displayName: "End to End Tests Scripts"
   inputs:
     command: 'custom'
     workingDir: 'BuildTest\ClientApp'
